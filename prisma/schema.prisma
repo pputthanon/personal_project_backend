@@ -8,11 +8,69 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
-  email     String  @unique
+  email     String   @unique
   mobile    String
   password  String
-  isAdmin   Boolean @default(false)
+  address   String
+  isAdmin   Boolean  @default(false)
+  Orders    Orders[]
+  Cart      Cart[]
+}
+
+model Orders {
+  id           Int          @id @default(autoincrement())
+  orderedAt    DateTime     @default(dbgenerated())
+  totalPrice   Decimal      @db.Decimal(2, 2)
+  transferSlip String
+  status       OrderStatus
+  user         User         @relation(fields: [userId], references: [id])
+  userId       Int
+  OrderItems   OrderItems[]
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPING
+  REJECT
+  COMPLETE
+}
+
+model OrderItems {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  totalPrice Decimal  @db.Decimal(2, 2)
+  orders     Orders   @relation(fields: [ordersId], references: [id])
+  ordersId   Int
+  products   Products @relation(fields: [productsId], references: [id])
+  productsId Int
+}
+
+model Products {
+  id         Int          @id @default(autoincrement())
+  name       String
+  author     String?
+  price      Decimal      @db.Decimal(2, 2)
+  image      String?
+  OrderItems OrderItems[]
+  Cart       Cart[]
+  Category   Category[]
+}
+
+model Cart {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  products   Products @relation(fields: [productsId], references: [id])
+  productsId Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+}
+
+model Category {
+  id             Int      @id @default(autoincrement())
+  classification String
+  products       Products @relation(fields: [productsId], references: [id])
+  productsId     Int
 }
