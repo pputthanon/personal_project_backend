@@ -1,5 +1,8 @@
 const createError = require("../utils/create-error");
+const jwt = require("jsonwebtoken");
 const prisma = require("../models/prisma");
+
+// Verify token
 
 module.exports = async (req, res, next) => {
   try {
@@ -28,6 +31,7 @@ module.exports = async (req, res, next) => {
 
     delete user.password;
 
+    // เพิ่ม key user เข้าไปใน req โดยให้มีค่าเท่ากับ user ที่เราไปหามา
     req.user = user;
     next();
   } catch (err) {
