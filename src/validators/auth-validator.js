@@ -5,7 +5,7 @@ const registerSchema = Joi.object({
   lastName: Joi.string().trim().required(),
   email: Joi.string().email().required(),
   password: Joi.string()
-    .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .pattern(/^[a-zA-Z0-9]{8,30}$/)
     .trim()
     .required(),
   confirmPassword: Joi.string()
@@ -16,3 +16,10 @@ const registerSchema = Joi.object({
 });
 
 exports.registerSchema = registerSchema;
+
+const loginSchema = Joi.object({
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
+exports.loginSchema = loginSchema;
