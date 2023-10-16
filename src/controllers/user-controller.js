@@ -33,9 +33,11 @@ exports.uploadSlip = async (req, res, next) => {
 
 exports.editAccount = async (req, res, next) => {
   try {
-    const { mobile, address } = req.body;
+    const { mobile, address, firstName, lastName } = req.body;
     await prisma.user.updateMany({
       data: {
+        firstName,
+        lastName,
         mobile,
         address,
       },
