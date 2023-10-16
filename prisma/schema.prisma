@@ -12,7 +12,7 @@ model User {
   firstName String
   lastName  String
   email     String   @unique
-  mobile    Int?
+  mobile    String?
   password  String
   address   String?
   isAdmin   Boolean? @default(false)
@@ -22,10 +22,10 @@ model User {
 
 model Orders {
   id           Int          @id @default(autoincrement())
-  orderedAt    DateTime     @default(dbgenerated())
-  totalPrice   Decimal      @db.Decimal(2, 2)
-  transferSlip String
-  status       OrderStatus
+  orderedAt    DateTime?    @default(dbgenerated())
+  totalPrice   Decimal?     @db.Decimal(2, 2)
+  transferSlip String?
+  status       OrderStatus?
   user         User         @relation(fields: [userId], references: [id])
   userId       Int
   OrderItems   OrderItems[]

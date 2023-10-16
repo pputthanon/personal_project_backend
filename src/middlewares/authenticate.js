@@ -34,6 +34,9 @@ module.exports = async (req, res, next) => {
     // เพิ่ม key user เข้าไปใน req โดยให้มีค่าเท่ากับ user ที่เราไปหามา
     req.user = user;
     next();
+
+    // เมื่อ error status code === 500 เลยต้องมาทำโลจิกใหม่เพื่อให้ status code === 401
+    // ซึ่ง error ของ JWT จะมีโอกาสเป็็น TokenExpiredError && JsonWebTokenError (mulform) (ดุได้จาก doc)
   } catch (err) {
     if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") {
       err.statusCode = 401;
