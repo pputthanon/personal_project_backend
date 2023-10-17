@@ -9,6 +9,7 @@ const errorMiddleware = require("./middlewares/error");
 const authRoute = require("./routes/auth-route");
 const userRoute = require("./routes/user-route");
 const adminRoute = require("./routes/admin-route");
+const homepageRoute = require("./routes/homepage-route");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.static("public"));
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
 app.use("/account", userRoute);
+app.use("/homepage", homepageRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
