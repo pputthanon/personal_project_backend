@@ -41,7 +41,7 @@ enum OrderStatus {
 model OrderItems {
   id         Int      @id @default(autoincrement())
   amount     Int
-  totalPrice Decimal  @db.Decimal(2, 2)
+  totalPrice Int
   orders     Orders   @relation(fields: [ordersId], references: [id])
   ordersId   Int
   products   Products @relation(fields: [productsId], references: [id])
@@ -52,7 +52,7 @@ model Products {
   id         Int          @id @default(autoincrement())
   name       String
   author     String?
-  price      Decimal      @db.Decimal(2, 2)
+  price      Int
   image      String?
   OrderItems OrderItems[]
   Cart       Cart[]

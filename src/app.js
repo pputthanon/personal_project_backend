@@ -8,6 +8,7 @@ const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
 const authRoute = require("./routes/auth-route");
 const userRoute = require("./routes/user-route");
+const adminRoute = require("./routes/admin-route");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/auth", authRoute);
+app.use("/admin", adminRoute);
 app.use("/account", userRoute);
 
 app.use(notFoundMiddleware);
