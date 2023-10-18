@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post("/", authenticateMiddleware, cartController.addBook);
 
+router.get("/", cartController.getBook);
+
 module.exports = router;

@@ -5,19 +5,6 @@ exports.addBook = async (req, res, next) => {
     const { id } = req.user;
     const { productsId } = req.body;
 
-    // const oldproduct = await prisma.cart.findMany({});
-    // const test = oldproduct.find(
-    //   (el) => el.productsId == productsId && el.userId == id
-    // );
-
-    // if (test) {
-    //   await prisma.cart.update({
-    //     where: {
-    //         id
-    //     },
-    //   })
-    // }
-
     const oldproduct = await prisma.cart.findFirst({
       where: {
         productsId,
@@ -48,6 +35,30 @@ exports.addBook = async (req, res, next) => {
 
     console.log(req.body);
     res.status(201).json({ message: "added" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getBook = async (req, res, next) => {
+  try {
+    const { productsId, userId } = req.body;
+    const getBook = await prisma.cart.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        products: {
+          select: {
+            name: true,
+            author: true,
+            price: true,
+            image: true,
+          },
+        },
+      },
+    });
+    res.status(201).json({ getBook });
   } catch (err) {
     next(err);
   }
