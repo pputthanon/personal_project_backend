@@ -1,6 +1,8 @@
 const fs = require("fs/promises");
 const { upload } = require("../utils/cloudinary-service");
 const prisma = require("../models/prisma");
+const createError = require("../utils/create-error");
+const { checkBookIdSchema } = require("../validators/delete-validator");
 
 exports.createBook = async (req, res, next) => {
   try {
@@ -27,5 +29,37 @@ exports.createBook = async (req, res, next) => {
     if (req.file) {
       fs.unlink(req.file.path);
     }
+  }
+};
+
+exports.deleteBook = async (req, res, next) => {
+  try {
+    const { value, error } = checkBookIdSchema.validate(req.params);
+
+    console.log(value);
+
+    if (error) {
+      return next(error);
+    }
+
+    const existBook = await prisma.products.findFirst({
+      where: {
+        id: value.productId,
+      },
+    });
+    // console.log(existBook);
+    if (!existBook) {
+      return next(createError("Cannot delete this book", 400));
+    }
+
+    await prisma.products.delete({
+      where: {
+        id: value.productId,
+      },
+    });
+
+    res.status(200).json({ message: "deleted" });
+  } catch (err) {
+    next(err);
   }
 };

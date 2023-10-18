@@ -23,7 +23,7 @@ model User {
 model Orders {
   id           Int          @id @default(autoincrement())
   orderedAt    DateTime?    @default(dbgenerated())
-  totalPrice   Decimal?     @db.Decimal(2, 2)
+  totalPrice   Decimal?     @db.Decimal(10, 2)
   transferSlip String?
   status       OrderStatus?
   user         User         @relation(fields: [userId], references: [id])
@@ -41,7 +41,7 @@ enum OrderStatus {
 model OrderItems {
   id         Int      @id @default(autoincrement())
   amount     Int
-  totalPrice Int
+  totalPrice Decimal? @db.Decimal(10, 2)
   orders     Orders   @relation(fields: [ordersId], references: [id])
   ordersId   Int
   products   Products @relation(fields: [productsId], references: [id])
@@ -52,7 +52,7 @@ model Products {
   id         Int          @id @default(autoincrement())
   name       String
   author     String?
-  price      Int
+  price      Decimal?     @db.Decimal(10, 2)
   image      String?
   OrderItems OrderItems[]
   Cart       Cart[]

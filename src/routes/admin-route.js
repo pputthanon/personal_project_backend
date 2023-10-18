@@ -1,6 +1,6 @@
 const express = require("express");
 
-const authAdminController = require("../controllers/admin-controller");
+const adminController = require("../controllers/admin-controller");
 const authenticateAdminMiddleware = require("../middlewares/admin-authenticate");
 const uploadMiddleware = require("../middlewares/upload");
 
@@ -10,7 +10,13 @@ router.post(
   "/create",
   authenticateAdminMiddleware,
   uploadMiddleware.single("image"),
-  authAdminController.createBook
+  adminController.createBook
+);
+
+router.delete(
+  "/delete/:productId",
+  authenticateAdminMiddleware,
+  adminController.deleteBook
 );
 
 module.exports = router;
