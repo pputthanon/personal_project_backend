@@ -7,7 +7,8 @@ const { checkBookIdSchema } = require("../validators/delete-validator");
 exports.createBook = async (req, res, next) => {
   try {
     // console.log(req.body);
-    const { name, author, price, categoryId, image } = req.body;
+    const { name, author, price, categoryId } = req.body;
+    // console.log(req.file);
 
     if (req.file) {
       const url = await upload(req.file.path);
@@ -47,7 +48,7 @@ exports.deleteBook = async (req, res, next) => {
         id: value.productId,
       },
     });
-    // console.log(existBook);
+
     if (!existBook) {
       return next(createError("Cannot delete this book", 400));
     }

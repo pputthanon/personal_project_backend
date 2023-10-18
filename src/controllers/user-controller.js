@@ -34,7 +34,7 @@ exports.uploadSlip = async (req, res, next) => {
 exports.editAccount = async (req, res, next) => {
   try {
     const { mobile, address, firstName, lastName } = req.body;
-    await prisma.user.updateMany({
+    const updateprofile = await prisma.user.updateMany({
       data: {
         firstName,
         lastName,
@@ -45,7 +45,7 @@ exports.editAccount = async (req, res, next) => {
         email: req.user.email,
       },
     });
-    res.status(200).json({ message: "updated successful" });
+    res.status(200).json({ message: "updated successful", updateprofile });
   } catch (err) {
     next(err);
   }
