@@ -6,6 +6,24 @@ const router = express.Router();
 
 router.post("/", authenticateMiddleware, cartController.addBook);
 
-router.get("/", cartController.getBook);
+router.get("/:userId", authenticateMiddleware, cartController.getBook);
+
+router.patch(
+  "/add/:cartId",
+  authenticateMiddleware,
+  cartController.addBookCart
+);
+
+router.patch(
+  "/remove/:cartId",
+  authenticateMiddleware,
+  cartController.removeBookCart
+);
+
+// router.delete(
+//   "/:productsId",
+//   authenticateMiddleware,
+//   cartController.deleteBookCart
+// );
 
 module.exports = router;

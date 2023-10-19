@@ -42,10 +42,10 @@ exports.addBook = async (req, res, next) => {
 
 exports.getBook = async (req, res, next) => {
   try {
-    const { productsId, userId } = req.body;
+    const { userId } = req.params;
     const getBook = await prisma.cart.findMany({
       where: {
-        userId,
+        userId: +userId,
       },
       include: {
         products: {
@@ -59,6 +59,60 @@ exports.getBook = async (req, res, next) => {
       },
     });
     res.status(201).json({ getBook });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.addBookCart = async (req, res, next) => {
+  try {
+    const { cartId } = req.params;
+
+    const oldproduct = await prisma.cart.findFirst({
+      where: {
+        id: +cartId,
+      },
+    });
+    console.log(oldproduct);
+    if (oldproduct) {
+      await prisma.cart.updateMany({
+        data: {
+          amount: oldproduct.amount + 1,
+        },
+        where: {
+          id: +cartId,
+        },
+      });
+    }
+
+    res.status(201).json({ message: "added" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.removeBookCart = async (req, res, next) => {
+  try {
+    const { cartId } = req.params;
+
+    const oldproduct = await prisma.cart.findFirst({
+      where: {
+        id: +cartId,
+      },
+    });
+    console.log(oldproduct);
+    if (oldproduct) {
+      await prisma.cart.updateMany({
+        data: {
+          amount: oldproduct.amount - 1,
+        },
+        where: {
+          id: +cartId,
+        },
+      });
+    }
+
+    res.status(200).json({ message: "removed" });
   } catch (err) {
     next(err);
   }
