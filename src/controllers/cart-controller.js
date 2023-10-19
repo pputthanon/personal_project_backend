@@ -117,3 +117,18 @@ exports.removeBookCart = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteBookCart = async (req, res, next) => {
+  try {
+    const { cartId } = req.params;
+    console.log(req.params);
+    await prisma.cart.delete({
+      where: {
+        id: +cartId,
+      },
+    });
+    res.status(200).json({ message: "deleted cart" });
+  } catch (err) {
+    next(err);
+  }
+};

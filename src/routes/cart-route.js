@@ -20,10 +20,10 @@ router.patch(
   cartController.removeBookCart
 );
 
-// router.delete(
-//   "/:productsId",
-//   authenticateMiddleware,
-//   cartController.deleteBookCart
-// );
+router.delete(
+  "/:cartId",
+  authenticateMiddleware,
+  cartController.deleteBookCart
+);
 
 module.exports = router;
