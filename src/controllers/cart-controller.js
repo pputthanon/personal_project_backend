@@ -127,6 +127,7 @@ exports.deleteBookCart = async (req, res, next) => {
         id: +cartId,
       },
     });
+
     res.status(200).json({ message: "deleted cart" });
   } catch (err) {
     next(err);

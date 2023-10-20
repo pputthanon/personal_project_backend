@@ -11,6 +11,7 @@ const userRoute = require("./routes/user-route");
 const adminRoute = require("./routes/admin-route");
 const homepageRoute = require("./routes/homepage-route");
 const cartRoute = require("./routes/cart-route");
+const orderRoute = require("./routes/order-route");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/admin", adminRoute);
 app.use("/account", userRoute);
 app.use("/homepage", homepageRoute);
 app.use("/cart", cartRoute);
+app.use("/order", orderRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
