@@ -45,7 +45,7 @@ exports.deleteBook = async (req, res, next) => {
 
     const existBook = await prisma.products.findFirst({
       where: {
-        id: value.productId,
+        id: value.productsId,
       },
     });
 
@@ -55,7 +55,7 @@ exports.deleteBook = async (req, res, next) => {
 
     await prisma.products.delete({
       where: {
-        id: value.productId,
+        id: value.productsId,
       },
     });
 

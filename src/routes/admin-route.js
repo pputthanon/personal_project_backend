@@ -14,7 +14,7 @@ router.post(
 );
 
 router.delete(
-  "/delete/:productId",
+  "/delete/:productsId",
   authenticateAdminMiddleware,
   adminController.deleteBook
 );
