@@ -25,13 +25,14 @@ model Orders {
   orderedAt    DateTime?    @default(dbgenerated())
   totalPrice   Decimal?     @db.Decimal(10, 2)
   transferSlip String?
-  status       OrderStatus?
+  status       OrderStatus  @default(RECEIVING)
   user         User         @relation(fields: [userId], references: [id])
   userId       Int
   OrderItems   OrderItems[]
 }
 
 enum OrderStatus {
+  RECEIVING
   PENDING
   SHIPPING
   REJECT
