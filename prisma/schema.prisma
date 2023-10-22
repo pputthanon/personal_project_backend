@@ -22,7 +22,7 @@ model User {
 
 model Orders {
   id           Int          @id @default(autoincrement())
-  orderedAt    DateTime?    @default(dbgenerated())
+  orderedAt    DateTime     @default(now())
   totalPrice   Decimal?     @db.Decimal(10, 2)
   transferSlip String?
   status       OrderStatus  @default(RECEIVING)

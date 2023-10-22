@@ -1,4 +1,5 @@
 const prisma = require("../models/prisma");
+const { checkCartIdSchema } = require("../validators/cart-validator");
 
 exports.addBook = async (req, res, next) => {
   try {
