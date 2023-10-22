@@ -8,7 +8,7 @@ exports.order = async (req, res, next) => {
 
     const cart = await prisma.cart.findMany({
       where: {
-        userId,
+        userId: id,
       },
     });
 
@@ -21,6 +21,37 @@ exports.order = async (req, res, next) => {
           totalPrice: +totalPrice,
         },
       });
+    }
+
+    if (cart) {
+      const order = await prisma.orders.findFirst({
+        where: {
+          userId: id,
+        },
+      });
+
+      console.log(order);
+
+      if (order) {
+        const orderItems = cart.map((cartItem) => {
+          return {
+            ordersId: order.id,
+            amount: +cartItem.amount,
+            productsId: +cartItem.productsId,
+          };
+        });
+        console.log(orderItems);
+
+        await prisma.orderItems.createMany({
+          data: orderItems,
+        });
+
+        await prisma.cart.deleteMany({
+          where: {
+            userId,
+          },
+        });
+      }
     }
 
     res.status(200).json({ message: "Created order" });
