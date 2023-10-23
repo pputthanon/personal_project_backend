@@ -35,7 +35,8 @@ exports.order = async (req, res, next) => {
       if (order) {
         const orderItems = cart.map((cartItem) => {
           return {
-            ordersId: order.id,
+            // ordersId: order.id,
+            ordersId: id,
             amount: +cartItem.amount,
             productsId: +cartItem.productsId,
           };
@@ -55,6 +56,20 @@ exports.order = async (req, res, next) => {
     }
 
     res.status(200).json({ message: "Created order" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getOrder = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const getOrder = await prisma.orders.findMany({
+      where: {
+        userId: +userId,
+      },
+    });
+    res.status(201).json({ getOrder });
   } catch (err) {
     next(err);
   }
