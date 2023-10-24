@@ -1,24 +1,29 @@
 const prisma = require("../models/prisma");
+const { upload } = require("../utils/cloudinary-service");
 
 exports.order = async (req, res, next) => {
   try {
     const { id } = req.user;
     const { userId } = req.params;
-    const totalPrice = req.body.total;
-
+    const data = req.body;
+    console.log(req.file, "fback");
+    // console.log(data, "req boby");
     const cart = await prisma.cart.findMany({
       where: {
         userId: id,
       },
     });
 
-    console.log(cart);
+    if (req.file) {
+      data.transferSlip = await upload(req.file.path);
+    }
 
     if (cart) {
       const createOrder = await prisma.orders.create({
         data: {
           userId: id,
-          totalPrice: +totalPrice,
+          totalPrice: +data.totalPrice,
+          transferSlip: data.transferSlip,
         },
       });
 
@@ -38,7 +43,7 @@ exports.order = async (req, res, next) => {
             };
           });
 
-          console.log(order);
+          // console.log(order);
 
           // console.log(orderItems);
 

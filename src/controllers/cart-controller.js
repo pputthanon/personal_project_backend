@@ -102,6 +102,13 @@ exports.removeBookCart = async (req, res, next) => {
       },
     });
     console.log(oldproduct);
+    if (oldproduct.amount === 1) {
+      await prisma.cart.delete({
+        where: {
+          id: +cartId,
+        },
+      });
+    }
     if (oldproduct) {
       await prisma.cart.updateMany({
         data: {
