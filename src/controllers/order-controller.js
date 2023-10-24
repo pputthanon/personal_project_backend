@@ -35,8 +35,7 @@ exports.order = async (req, res, next) => {
       if (order) {
         const orderItems = cart.map((cartItem) => {
           return {
-            // ordersId: order.id,
-            ordersId: id,
+            ordersId: order.id,
             amount: +cartItem.amount,
             productsId: +cartItem.productsId,
           };

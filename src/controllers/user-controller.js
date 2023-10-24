@@ -13,11 +13,14 @@ exports.uploadSlip = async (req, res, next) => {
     if (req.file) {
       const url = await upload(req.file.path);
       await prisma.orders.update({
+        where: {
+          AND: {
+            userId: req.user.id,
+            id,
+          },
+        },
         data: {
           transferSlip: url,
-        },
-        where: {
-          userId: req.user.id,
         },
       });
     }
