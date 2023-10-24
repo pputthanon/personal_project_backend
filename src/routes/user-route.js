@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.patch(
   "/payment-inform",
-  authenticateMiddleware,
   uploadMiddleware.single("transferSlip"),
   userController.uploadSlip
 );

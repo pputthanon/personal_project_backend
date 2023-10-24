@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 app.use("/account", userRoute);
 app.use("/homepage", homepageRoute);

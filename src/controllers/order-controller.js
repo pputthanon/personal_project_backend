@@ -15,36 +15,37 @@ exports.order = async (req, res, next) => {
     console.log(cart);
 
     if (cart) {
-      await prisma.orders.create({
+      const createOrder = await prisma.orders.create({
         data: {
           userId: id,
           totalPrice: +totalPrice,
         },
       });
-    }
 
-    if (cart) {
-      const order = await prisma.orders.findFirst({
-        where: {
-          userId: id,
-        },
-      });
-
-      console.log(order);
-
-      if (order) {
-        const orderItems = cart.map((cartItem) => {
-          return {
-            ordersId: order.id,
-            amount: +cartItem.amount,
-            productsId: +cartItem.productsId,
-          };
+      if (cart) {
+        const order = await prisma.orders.findFirst({
+          where: {
+            userId: id,
+            id: createOrder.id,
+          },
         });
-        console.log(orderItems);
+        if (order) {
+          const orderItems = cart.map((cartItem) => {
+            return {
+              ordersId: order.id,
+              amount: +cartItem.amount,
+              productsId: +cartItem.productsId,
+            };
+          });
 
-        await prisma.orderItems.createMany({
-          data: orderItems,
-        });
+          console.log(order);
+
+          // console.log(orderItems);
+
+          await prisma.orderItems.createMany({
+            data: orderItems,
+          });
+        }
 
         await prisma.cart.deleteMany({
           where: {

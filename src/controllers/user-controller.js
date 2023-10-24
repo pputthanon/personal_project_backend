@@ -6,6 +6,7 @@ const prisma = require("../models/prisma");
 
 exports.uploadSlip = async (req, res, next) => {
   try {
+    // console.log(req.file);
     if (!req.file) {
       return next(createError("Transfer Slip is required", 400));
     }
