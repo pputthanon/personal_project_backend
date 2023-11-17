@@ -66,15 +66,32 @@ exports.order = async (req, res, next) => {
   }
 };
 
-exports.getOrder = async (req, res, next) => {
+// exports.getOrder = async (req, res, next) => {
+//   try {
+//     const { userId } = req.params;
+//     const getOrder = await prisma.orders.findMany({
+//       where: {
+//         userId: +userId,
+//       },
+//     });
+//     res.status(200).json({ getOrder });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+exports.getOrderItems = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const getOrder = await prisma.orders.findMany({
+    const { orderId } = req.params;
+    const getOrderItems = await prisma.orderItems.findMany({
       where: {
-        userId: +userId,
+        ordersId: +orderId,
+      },
+      include: {
+        products: true,
       },
     });
-    res.status(201).json({ getOrder });
+    res.status(200).json({ getOrderItems });
   } catch (err) {
     next(err);
   }

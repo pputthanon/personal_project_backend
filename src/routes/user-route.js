@@ -6,6 +6,8 @@ const uploadMiddleware = require("../middlewares/upload");
 
 const router = express.Router();
 
+router.get("/:userId", authenticateMiddleware, userController.getOrder);
+
 router.patch(
   "/payment-inform",
   uploadMiddleware.single("transferSlip"),

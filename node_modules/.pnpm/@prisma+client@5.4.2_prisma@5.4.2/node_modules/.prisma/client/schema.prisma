@@ -24,7 +24,7 @@ model Orders {
   id           Int          @id @default(autoincrement())
   orderedAt    DateTime     @default(now())
   totalPrice   Decimal?     @db.Decimal(10, 2)
-  transferSlip String?
+  transferSlip String
   status       OrderStatus  @default(RECEIVING)
   user         User         @relation(fields: [userId], references: [id])
   userId       Int

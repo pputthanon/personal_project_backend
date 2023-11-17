@@ -6,7 +6,6 @@ const prisma = require("../models/prisma");
 
 exports.uploadSlip = async (req, res, next) => {
   try {
-    // console.log(req.file);
     if (!req.file) {
       return next(createError("Transfer Slip is required", 400));
     }
@@ -29,7 +28,7 @@ exports.uploadSlip = async (req, res, next) => {
   } catch (err) {
     next(err);
   } finally {
-    if (req.file) {
+    if (res.file) {
       fs.unlink(req.file.path);
     }
   }
@@ -50,6 +49,20 @@ exports.editAccount = async (req, res, next) => {
       },
     });
     res.status(200).json({ message: "updated successful", updateprofile });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getOrder = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const getOrder = await prisma.orders.findMany({
+      where: {
+        userId: +userId,
+      },
+    });
+    res.status(200).json({ getOrder });
   } catch (err) {
     next(err);
   }
