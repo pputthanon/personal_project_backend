@@ -27,13 +27,19 @@ router.post(
 );
 
 router.patch(
-  "/:orderId",
+  "/status/:orderId",
   authenticateAdminMiddleware,
   adminController.updateStatus
 );
 
-router.delete(
-  "/delete/:productsId",
+router.patch(
+  "/edit/:productId",
+  authenticateAdminMiddleware,
+  adminController.editProduct
+);
+
+router.patch(
+  "/delete/:id",
   authenticateAdminMiddleware,
   adminController.deleteBook
 );

@@ -35,31 +35,16 @@ exports.createBook = async (req, res, next) => {
 
 exports.deleteBook = async (req, res, next) => {
   try {
-    const { value, error } = checkBookIdSchema.validate(req.params);
-
-    console.log(value);
-
-    if (error) {
-      return next(error);
-    }
-
-    const existBook = await prisma.products.findFirst({
+    const softDeleted = await prisma.products.update({
       where: {
-        id: value.productsId,
+        id: +req.params.id,
+      },
+      data: {
+        status: "DISABLE",
       },
     });
 
-    if (!existBook) {
-      return next(createError("Cannot delete this book", 400));
-    }
-
-    await prisma.products.delete({
-      where: {
-        id: value.productsId,
-      },
-    });
-
-    res.status(200).json({ message: "deleted" });
+    res.status(200).json({ message: "Soft deleted", softDeleted });
   } catch (err) {
     next(err);
   }
@@ -103,10 +88,12 @@ exports.getOrderByOrderId = async (req, res, next) => {
 exports.updateStatus = async (req, res, next) => {
   try {
     const { orderId } = req.params;
-    const { status } = req.body;
-    console.log(status);
+    const { newStatus } = req.body;
+
     const updateStatus = await prisma.orders.update({
-      data: { status },
+      data: {
+        status: newStatus,
+      },
       where: {
         id: +orderId,
       },
@@ -126,6 +113,20 @@ exports.getAllBook = async (req, res, next) => {
       },
     });
     res.status(201).json({ allBooks });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.editProduct = async (req, res, next) => {
+  try {
+    const { value } = req.params;
+    // const editProduct =
+
+    if (req.body.status === "NOT") {
+      // update status === req.body.status
+      return res.status(201).json;
+    }
   } catch (err) {
     next(err);
   }

@@ -12,7 +12,6 @@ router.post(
   orderController.order
 );
 
-// router.get("/:userId", authenticateMiddleware, orderController.getOrder);
 router.get("/:orderId", authenticateMiddleware, orderController.getOrderItems);
 
 module.exports = router;
