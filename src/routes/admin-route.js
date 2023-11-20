@@ -6,11 +6,30 @@ const uploadMiddleware = require("../middlewares/upload");
 
 const router = express.Router();
 
+router.get("/", adminController.getAllBook);
+
+router.get(
+  "/orders",
+  authenticateAdminMiddleware,
+  adminController.getAllOrders
+);
+router.get(
+  "/orders/:orderId",
+  authenticateAdminMiddleware,
+  adminController.getOrderByOrderId
+);
+
 router.post(
   "/create",
   authenticateAdminMiddleware,
   uploadMiddleware.single("image"),
   adminController.createBook
+);
+
+router.patch(
+  "/:orderId",
+  authenticateAdminMiddleware,
+  adminController.updateStatus
 );
 
 router.delete(

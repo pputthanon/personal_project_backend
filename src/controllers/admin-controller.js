@@ -6,19 +6,19 @@ const { checkBookIdSchema } = require("../validators/delete-validator");
 
 exports.createBook = async (req, res, next) => {
   try {
-    // console.log(req.body);
-    const { name, author, price, categoryId } = req.body;
+    const data = req.body;
+    console.log(req.body);
     // console.log(req.file);
 
     if (req.file) {
-      const url = await upload(req.file.path);
+      data.image = await upload(req.file.path);
       await prisma.products.create({
         data: {
-          image: url,
-          name,
-          author,
-          price: +price,
-          categoryId: +categoryId,
+          image: data.image,
+          name: data.name,
+          author: data.author,
+          price: +data.price,
+          categoryId: +data.categoryId,
         },
       });
     }
@@ -60,6 +60,72 @@ exports.deleteBook = async (req, res, next) => {
     });
 
     res.status(200).json({ message: "deleted" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllOrders = async (req, res, next) => {
+  try {
+    const getAllOrders = await prisma.orders.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            mobile: true,
+            address: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json({ getAllOrders });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getOrderByOrderId = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const getOrderByOrderId = await prisma.orders.findFirst({
+      where: {
+        id: +orderId,
+      },
+    });
+    res.status(200).json({ getOrderByOrderId });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateStatus = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    console.log(status);
+    const updateStatus = await prisma.orders.update({
+      data: { status },
+      where: {
+        id: +orderId,
+      },
+    });
+    res.status(200).json({ message: "Status Updated" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllBook = async (req, res, next) => {
+  try {
+    const { value } = req.params;
+    const allBooks = await prisma.products.findMany({
+      where: {
+        data: value,
+      },
+    });
+    res.status(201).json({ allBooks });
   } catch (err) {
     next(err);
   }

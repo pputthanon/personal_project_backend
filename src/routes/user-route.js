@@ -8,12 +8,6 @@ const router = express.Router();
 
 router.get("/:userId", authenticateMiddleware, userController.getOrder);
 
-router.patch(
-  "/payment-inform",
-  uploadMiddleware.single("transferSlip"),
-  userController.uploadSlip
-);
-
 router.patch("/edit", authenticateMiddleware, userController.editAccount);
 
 module.exports = router;

@@ -6,8 +6,7 @@ exports.order = async (req, res, next) => {
     const { id } = req.user;
     const { userId } = req.params;
     const data = req.body;
-    console.log(req.file, "fback");
-    // console.log(data, "req boby");
+
     const cart = await prisma.cart.findMany({
       where: {
         userId: id,
@@ -43,10 +42,6 @@ exports.order = async (req, res, next) => {
             };
           });
 
-          // console.log(order);
-
-          // console.log(orderItems);
-
           await prisma.orderItems.createMany({
             data: orderItems,
           });
@@ -65,20 +60,6 @@ exports.order = async (req, res, next) => {
     next(err);
   }
 };
-
-// exports.getOrder = async (req, res, next) => {
-//   try {
-//     const { userId } = req.params;
-//     const getOrder = await prisma.orders.findMany({
-//       where: {
-//         userId: +userId,
-//       },
-//     });
-//     res.status(200).json({ getOrder });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 
 exports.getOrderItems = async (req, res, next) => {
   try {

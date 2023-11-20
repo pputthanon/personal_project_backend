@@ -13,6 +13,10 @@ const registerSchema = Joi.object({
     .trim()
     .required()
     .strip(),
+  address: Joi.string().required(),
+  mobile: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .required(),
 });
 
 exports.registerSchema = registerSchema;
