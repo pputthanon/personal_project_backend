@@ -120,13 +120,39 @@ exports.getAllBook = async (req, res, next) => {
 
 exports.editProduct = async (req, res, next) => {
   try {
-    const { value } = req.params;
-    // const editProduct =
-
-    if (req.body.status === "NOT") {
-      // update status === req.body.status
-      return res.status(201).json;
+    const data = req.body;
+    const { productId } = req.params;
+    if (req.file) {
+      data.image = await upload(req.file.path);
     }
+    console.log("req.file", req.file);
+    const editProduct = await prisma.products.update({
+      data: {
+        name: data.name,
+        author: data.author,
+        price: data.price,
+        image: data.image,
+        categoryId: +data.categoryId,
+      },
+      where: {
+        id: +productId,
+      },
+    });
+    res.status(200).json({ editProduct });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getProductById = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const getProductById = await prisma.products.findFirst({
+      where: {
+        id: +productId,
+      },
+    });
+    res.status(200).json({ getProductById });
   } catch (err) {
     next(err);
   }

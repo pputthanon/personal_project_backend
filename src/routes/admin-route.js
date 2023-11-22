@@ -8,11 +8,14 @@ const router = express.Router();
 
 router.get("/", adminController.getAllBook);
 
+router.get("/product/:productId", adminController.getProductById);
+
 router.get(
   "/orders",
   authenticateAdminMiddleware,
   adminController.getAllOrders
 );
+
 router.get(
   "/orders/:orderId",
   authenticateAdminMiddleware,
@@ -35,6 +38,7 @@ router.patch(
 router.patch(
   "/edit/:productId",
   authenticateAdminMiddleware,
+  uploadMiddleware.single("image"),
   adminController.editProduct
 );
 
