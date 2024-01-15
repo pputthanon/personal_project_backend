@@ -14,4 +14,10 @@ router.post(
 
 router.get("/:orderId", authenticateMiddleware, orderController.getOrderItems);
 
+// router.get(
+//   "/getOrderByUserId/:userId",
+//   authenticateMiddleware,
+//   orderController.getOrderByUserId
+// );
+
 module.exports = router;
