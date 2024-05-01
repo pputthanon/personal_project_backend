@@ -77,17 +77,3 @@ exports.getOrderItems = async (req, res, next) => {
     next(err);
   }
 };
-
-// exports.getOrderByUserId = async (req, res, next) => {
-//   try {
-//     const { id } = req.user;
-//     const getOrderByUserId = await prisma.orders.findMany({
-//       where: {
-//         userId: id,
-//       },
-//     });
-//     res.status(200).json({ getOrderByUserId });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
